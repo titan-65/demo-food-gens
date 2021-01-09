@@ -37,12 +37,17 @@ const initialList = [
   },
 ]
 
+/*
+  @name: getAsyncFoodGens
+  @desc: Simulate async / API fetching of data
+*/
 const getAsyncFoodGens = () => {
-  Promise.resolve({
-    data: {
+  return new Promise(resolve => 
+    setTimeout(() => resolve({data: {
       foodGens: initialList 
-    }
-  })
+    }})), 
+    2000
+  )   
 }
 
 
@@ -60,6 +65,12 @@ function App() {
   
   const [searchTerm, setSearchTerm] = useSemiPersistState('search', '')
   const [foodGens, setFoodGens] = useState([])
+  
+  useEffect(() => {
+    getAsyncFoodGens().then(result => {
+        setFoodGens(result.data.foodGens)      
+      })
+  }, [])
   
   const handleRemoveFoodGens = item => {
     const newFoodGens = foodGens.filter(foodGen => {
