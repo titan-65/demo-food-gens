@@ -1,11 +1,16 @@
 import React from 'react'
 
-const Card = ({url}) => {
+const Card = ({item, onRemoveItem}) => {
+	// console.log(onRemoveItem)
+	// console.log(item)
+	const handleRemoveItem = () => {
+		onRemoveItem(item);
+	}
 	return (
 		<div className="card">
 		  <div className="card-image">
 			<figure className="image is-4by3">
-			  <img src={url} alt="Placeholder image"/>
+			  <img src={item.url} alt="Placeholder image"/>
 			</figure>
 		  </div>
 		  <div className="card-content">
@@ -25,7 +30,7 @@ const Card = ({url}) => {
 			  Phasellus nec iaculis mauris. <a>@bulmaio</a>.
 			  <a href="#">#css</a> <a href="#">#responsive</a>
 			  <br/>
-			  <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+			  <button className="button is-danger" type="button" onClick={handleRemoveItem}>Dismiss</button>
 			</div>
 		  </div>
 		</div>

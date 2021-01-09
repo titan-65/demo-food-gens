@@ -14,31 +14,40 @@ const mainText = {
   textShadow: '4px 4px 12px #29211b'
 }
 
+const initialList = [
+  {
+    objectID: 0,
+    title: 'Gloria',
+    url: 'https://images.unsplash.com/photo-1601314002592-b8734bca6604?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=976&q=80',
+    location: {
+      long: 0,
+      lat: 0,
+    },
+    rating: 5
+  },
+  {
+    objectID: 1,
+    title: 'Pan Chicken Spot',
+    url: 'https://images.unsplash.com/photo-1575918766310-d95c6e9df6d7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80',
+    location: {
+      long: 0,
+      lat: 0,
+    },
+    rating: 4
+  },
+]
+
+const getAsyncFoodGens = () => {
+  Promise.resolve({
+    data: {
+      foodGens: initialList 
+    }
+  })
+}
+
 
 function App() {
-  const list = [
-    {
-      objectID: 0,
-      title: 'Gloria',
-      url: 'https://images.unsplash.com/photo-1601314002592-b8734bca6604?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=976&q=80',
-      location: {
-        long: 0,
-        lat: 0,
-      },
-      rating: 5
-    },
-    {
-      objectID: 1,
-      title: 'Pan Chicken Spot',
-      url: 'https://images.unsplash.com/photo-1575918766310-d95c6e9df6d7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80',
-      location: {
-        long: 0,
-        lat: 0,
-      },
-      rating: 4
-    },
-  ]
-  
+ 
   // Callback function
   //TODO: Remove hooks into custom hooks
   // const [searchTerm, setSearchTerm] = useState(
@@ -48,12 +57,21 @@ function App() {
   // useEffect(() => {
   //   localStorage.setItem('search', searchTerm);
   // }, [searchTerm])
+  
   const [searchTerm, setSearchTerm] = useSemiPersistState('search', '')
+  const [foodGens, setFoodGens] = useState([])
+  
+  const handleRemoveFoodGens = item => {
+    const newFoodGens = foodGens.filter(foodGen => {
+      return item.objectID !== foodGen.objectID
+    })
+    setFoodGens(newFoodGens)
+  }
   const handleSearch = event => {
     // console.log(event.target.value)
     setSearchTerm(event.target.value)
   }
-  const searchFoodGens = list.filter(food => {
+  const searchFoodGens = foodGens.filter(food => {
     return food.title.toLowerCase().includes(searchTerm.toLowerCase())
   })
   
@@ -88,7 +106,7 @@ function App() {
             </div>
             <br/>
             <div className="columns">
-                <ListColumn list={searchFoodGens}/>
+                <ListColumn list={searchFoodGens} onRemoveItem={handleRemoveFoodGens}/>
               </div>
           </div>
         </section>

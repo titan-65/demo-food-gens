@@ -1,13 +1,14 @@
 import React from 'react'
 import Card from '../Cards/Card'
 
-export default function ListColumn({list}) {
+export default function ListColumn({list, onRemoveItem}) {
+	// console.log(onRemoveItem)
 	return (
 		<>
-			{list.map(({objectID, ...item}) => {
+			{list.map((item) => {
 				  return (
-					<div className="column" key={objectID}>
-					  <Card {...item}/>
+					<div className="column" key={item.objectID}>
+					  <Card item={item} onRemoveItem={onRemoveItem}/>
 					</div>
 				  )
 				})}
