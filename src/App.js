@@ -46,7 +46,7 @@ const getAsyncFoodGens = () => {
     setTimeout(() => resolve({data: {
       foodGens: initialList 
     }})), 
-    2000
+    5000
   )   
 }
 
@@ -65,10 +65,18 @@ function App() {
   
   const [searchTerm, setSearchTerm] = useSemiPersistState('search', '')
   const [foodGens, setFoodGens] = useState([])
+  const [isLoading, setisLoading] = useState(false)
+  const [isError, setIsError] = useState(false)
   
   useEffect(() => {
+    setisLoading(true)
+    
     getAsyncFoodGens().then(result => {
-        setFoodGens(result.data.foodGens)      
+        setFoodGens(result.data.foodGens)
+        setisLoading(false)      
+      }).catch(error => {
+        console.log(error)
+        setIsError(true)
       })
   }, [])
   
@@ -105,6 +113,7 @@ function App() {
             <div className="has-text-centered">
               <h1 className="title is-1">Food Gens</h1>
             </div>
+            {isError && <p>Something went wrong</p>}
             {/* Search */}
               <Search search={searchTerm} onSearch={handleSearch}/>
             {/* Search End */}
@@ -117,7 +126,7 @@ function App() {
             </div>
             <br/>
             <div className="columns">
-                <ListColumn list={searchFoodGens} onRemoveItem={handleRemoveFoodGens}/>
+              {isLoading ? <progress className="progress is-medium is-info"></progress> :  <ListColumn list={searchFoodGens} onRemoveItem={handleRemoveFoodGens}/>}
               </div>
           </div>
         </section>
