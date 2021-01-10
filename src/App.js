@@ -14,8 +14,6 @@ const mainText = {
   textShadow: '4px 4px 12px #29211b'
 }
 
-
-
 const foodGenReducer = (state, action) => {
   switch (action.type) {
     // case 'SET__FOODGEN':
