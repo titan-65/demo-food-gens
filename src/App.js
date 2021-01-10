@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useReducer} from 'react'
+import React, {useEffect, useReducer} from 'react'
 import Navbar from './components/Navbar/Navbar'
 import ListColumn from './components/List/ListColumn'
 import {Search} from './components/Search/Search'
