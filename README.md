@@ -1,5 +1,9 @@
 ## FoodGens 
 
-!(FoodGens)[dp.png]
+![FoodGens](dp.png)
 
-!(Nova Editor)[nova.png]
+
+## Setup
+
+![Nova Editor](nova.png)
+
