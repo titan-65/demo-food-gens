@@ -18,12 +18,38 @@ const mainText = {
 
 const foodGenReducer = (state, action) => {
   switch (action.type) {
-    case 'SET__FOODGEN':
-      return action.payload
+    // case 'SET__FOODGEN':
+    //   return action.payload
+    // case 'REMOVE_FOODGEN':
+    //   return state.filter(foodGen => {
+    //     return action.payload.objectID !== foodGen.objectID
+    //   })
+    case 'FOOD_FETCH_INIT':
+      return {
+        ...state,
+        isLoading: true,
+        isError: false
+      };
+    case 'FOOD_FETCH_SUCCESS':
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload
+      };
+    case 'FOOD_FETCH_FAILURE':
+      return {
+          ...state,
+          isLoading: false,
+          isError: true,
+        };
     case 'REMOVE_FOODGEN':
-      return state.filter(foodGen => {
-        return action.payload.objectID !== foodGen.objectID
-      })
+        return {
+          ...state,
+          data: state.data.filter(foodGen => {
+                return action.payload.objectID !== foodGen.objectID
+              })
+        };
     default:
       throw new Error()
   } 
@@ -92,25 +118,30 @@ function App() {
   /* 
     Replace the useState for foodGens for more advanced state management using useReducer
   */
-  const [foodGens, dispatchFoodGens] = useReducer(foodGenReducer, [])
+  const [foodGens, dispatchFoodGens] = useReducer(foodGenReducer, {
+    data: [],
+    isLoading: false,
+    isError: false,
+  })
   //const [foodGens, setFoodGens] = useState([])
-  const [isLoading, setisLoading] = useState(false)
-  const [isError, setIsError] = useState(false)
+  // const [isLoading, setisLoading] = useState(false)
+  // const [isError, setIsError] = useState(false)
   
   useEffect(() => {
-    setisLoading(true)
-    
+    //setisLoading(true)
+    dispatchFoodGens({ type: 'FOOD_FETCH_INIT' })
     getAsyncFoodGens().then(result => {
         // Implement reducer
         //setFoodGens(result.data.foodGens)
         dispatchFoodGens({
-          type: 'SET__FOODGEN',
+          type: 'FOOD_FETCH_SUCCESS',
           payload: result.data.foodGens
         })
-        setisLoading(false)      
+        // setisLoading(false)      
       }).catch(error => {
-        console.log(error)
-        setIsError(true)
+        dispatchFoodGens({ type: 'FOOD_FETCH_FAILURE' })
+        //console.log(error)
+        //setIsError(true)
       })
   }, [])
   
@@ -136,7 +167,7 @@ function App() {
     // console.log(event.target.value)
     setSearchTerm(event.target.value)
   }
-  const searchFoodGens = foodGens.filter(food => {
+  const searchFoodGens = foodGens.data.filter(food => {
     return food.title.toLowerCase().includes(searchTerm.toLowerCase())
   })
   
@@ -159,7 +190,7 @@ function App() {
             <div className="has-text-centered">
               <h1 className="title is-1">Food Gens</h1>
             </div>
-            {isError && <p>Something went wrong</p>}
+            {foodGens.isError && <p>Something went wrong</p>}
             {/* Search */}
               <Search search={searchTerm} onSearch={handleSearch}/>
             {/* Search End */}
@@ -172,7 +203,7 @@ function App() {
             </div>
             <br/>
             <div className="columns">
-              {isLoading ? <progress className="progress is-medium is-info"></progress> :  <ListColumn list={searchFoodGens} onRemoveItem={handleRemoveFoodGens}/>}
+              {foodGens.isLoading ? <progress className="progress is-medium is-info"></progress> :  <ListColumn list={searchFoodGens} onRemoveItem={handleRemoveFoodGens}/>}
               </div>
           </div>
         </section>
