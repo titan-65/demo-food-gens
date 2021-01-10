@@ -7,3 +7,8 @@
 
 ![Nova Editor](nova.png)
 
+
+# Quick Setup
+
+
+
