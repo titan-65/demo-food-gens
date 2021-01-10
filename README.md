@@ -1,5 +1,5 @@
 ## FoodGens 
 
-!()[dp.png]
+!(FoodGens)[dp.png]
 
-!()[nova.png]
+!(Nova Editor)[nova.png]
