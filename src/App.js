@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useReducer} from 'react'
 import Navbar from './components/Navbar/Navbar'
 import ListColumn from './components/List/ListColumn'
 import {Search} from './components/Search/Search'
@@ -13,6 +13,31 @@ const mainText = {
   color: 'white',
   textShadow: '4px 4px 12px #29211b'
 }
+
+
+
+const foodGenReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET__FOODGEN':
+      return action.payload
+    case 'REMOVE_FOODGEN':
+      return state.filter(foodGen => {
+        return action.payload.objectID !== foodGen.objectID
+      })
+    default:
+      throw new Error()
+  } 
+//   if (action.type === 'SET__FOODGEN') {
+//     return action.payload
+//   } else if (action.type === 'REMOVE_FOODGEN') {
+//     return state.filter(foodGen => {
+//       return action.payload.objectID !== foodGen.objectID
+//     })
+//   } else {
+//     throw new Error
+//   }
+}
+
 
 const initialList = [
   {
@@ -64,7 +89,11 @@ function App() {
   // }, [searchTerm])
   
   const [searchTerm, setSearchTerm] = useSemiPersistState('search', '')
-  const [foodGens, setFoodGens] = useState([])
+  /* 
+    Replace the useState for foodGens for more advanced state management using useReducer
+  */
+  const [foodGens, dispatchFoodGens] = useReducer(foodGenReducer, [])
+  //const [foodGens, setFoodGens] = useState([])
   const [isLoading, setisLoading] = useState(false)
   const [isError, setIsError] = useState(false)
   
@@ -72,7 +101,12 @@ function App() {
     setisLoading(true)
     
     getAsyncFoodGens().then(result => {
-        setFoodGens(result.data.foodGens)
+        // Implement reducer
+        //setFoodGens(result.data.foodGens)
+        dispatchFoodGens({
+          type: 'SET__FOODGEN',
+          payload: result.data.foodGens
+        })
         setisLoading(false)      
       }).catch(error => {
         console.log(error)
@@ -81,11 +115,23 @@ function App() {
   }, [])
   
   const handleRemoveFoodGens = item => {
-    const newFoodGens = foodGens.filter(foodGen => {
-      return item.objectID !== foodGen.objectID
+    dispatchFoodGens({
+      type: 'REMOVE_FOODGEN',
+      payload: item
     })
-    setFoodGens(newFoodGens)
+    /*
+      Removed logic and placed in reducer
+    */
+    // const newFoodGens = foodGens.filter(foodGen => {
+    //   return item.objectID !== foodGen.objectID
+    // })
+    //setFoodGens(newFoodGens)
+    // dispatchFoodGens({
+    //   type: 'SET__FOODGEN',
+    //   payload: newFoodGens,
+    // })
   }
+  
   const handleSearch = event => {
     // console.log(event.target.value)
     setSearchTerm(event.target.value)
