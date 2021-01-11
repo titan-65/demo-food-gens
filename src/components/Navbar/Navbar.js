@@ -4,7 +4,7 @@ export default function Navbar() {
 	return (
 		<nav className="navbar" role="navigation" aria-label="main navigation">
 		  <div className="navbar-brand">
-			<a className="navbar-item" href="https://bulma.io">
+			<a className="navbar-item" href="/">
 			  <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: Free, open source, and modern CSS framework based on Flexbox" width="112" height="28"/>
 			</a>
 			{/*eslint-disable-next-line*/}

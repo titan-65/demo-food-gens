@@ -7,7 +7,7 @@ export default function ListColumn({list, onRemoveItem}) {
 		<>
 			{list.map((item) => {
 				  return (
-					<div className="column" key={item.objectID}>
+					<div className="column is-half" key={item.objectID}>
 					  <Card item={item} onRemoveItem={onRemoveItem}/>
 					</div>
 				  )
