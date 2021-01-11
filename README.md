@@ -8,6 +8,7 @@
 
 ![Nova Editor](nova.png)
 
+![FoodGens](https://media.giphy.com/media/UDwqydLZ4nTXpOfpdU/giphy.gif)
 
 # Quick Setup
 

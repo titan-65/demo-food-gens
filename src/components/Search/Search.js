@@ -18,7 +18,7 @@ const InputWithLabel = ({id, label, value, type="text", onInputChange, 									
 		<div className="field">
 		  <label className="label has-text-centered" htmlFor={id}>{label}</label>
 			<div className="control">
-			  <input className="input" type={type} value={value} onChange={onInputChange} autoFocus placeholder="e.g. Gloira's By The Sea"/>
+			  <input className="input" type={type} value={value} onChange={onInputChange} placeholder="e.g. Gloira's By The Sea"/>
 			</div>
 			<div className="has-text-centered">
 			  <p className="is-size-7">
