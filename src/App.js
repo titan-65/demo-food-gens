@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 import axios from 'axios';
 import Navbar from './components/Navbar/Navbar';
+import HeroHeader from './components/Hero/HeroHeader';
 import ListColumn from './components/List/ListColumn';
 import { Search } from './components/Search/Search';
 import { useSemiPersistState } from './lib/custom';
@@ -135,26 +136,25 @@ function App() {
 		//setisLoading(true)
 		dispatchFoodGens({ type: 'FOOD_FETCH_INIT' });
 		async function fetchAPI() {
-      try {
-        const response = await axios(`${API_ENDPOINT}`, {
-          headers: {
-            'X-Parse-Application-Id': Env.APPLICATION_ID,
-            'X-Parse-REST-API-Key': Env.REST_API_KEY,
-            'Content-Type': 'application/json',
-          },
-        }).then(response => {
-          return response.data.results
-        });
-        console.log(response)
-        dispatchFoodGens({
-          type: 'FOOD_FETCH_SUCCESS',
-          payload: response
-        })
-      } catch {
-        dispatchFoodGens({ type: 'FOOD_FETCH_FAILURE'})
-      }
-      
-    }
+			try {
+				const response = await axios(`${API_ENDPOINT}`, {
+					headers: {
+						'X-Parse-Application-Id': Env.APPLICATION_ID,
+						'X-Parse-REST-API-Key': Env.REST_API_KEY,
+						'Content-Type': 'application/json',
+					},
+				}).then(response => {
+					return response.data.results;
+				});
+				console.log(response);
+				dispatchFoodGens({
+					type: 'FOOD_FETCH_SUCCESS',
+					payload: response,
+				});
+			} catch {
+				dispatchFoodGens({ type: 'FOOD_FETCH_FAILURE' });
+			}
+		}
 		// getAsyncFoodGens().then(result => {
 		//     // Implement reducer
 		//     //setFoodGens(result.data.foodGens)
@@ -168,7 +168,7 @@ function App() {
 		//     //console.log(error)
 		//     //setIsError(true)
 		//   })
-    fetchAPI()
+		fetchAPI();
 	}, []);
 
 	const handleRemoveFoodGens = item => {
@@ -199,20 +199,8 @@ function App() {
 
 	return (
 		<>
-			<section className="hero is-fullheight" style={useStyle}>
-				<div className="hero-head">
-					<div className="container">
-						<Navbar />
-					</div>
-				</div>
-				<div className="hero-body">
-					<div className="container has-text-centered">
-						<p className="title is-1" style={mainText}>
-							Welcome to FoodGens
-						</p>
-					</div>
-				</div>
-			</section>
+			<Navbar />
+			<HeroHeader mainText={mainText} useStyle={useStyle} />
 			<section className="section">
 				<div className="container">
 					<div className="has-text-centered">
